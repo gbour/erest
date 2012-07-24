@@ -12,13 +12,14 @@ handle(Req=#http_req{method='GET', path_info=[]}, State) ->
 	Prefix = erest_config:lookup(prefix, ""),
 	Schema = erest_schema:all(Prefix, erest_config:lookup(schema)),
 
-	reply(Req, json, Schema).
+	reply(Req, 200, json, Schema);
 
-reply(Req, Format, Content) ->
-	RequestBridge = simple_bridge:make_request(cowboy_request_bridge, {Req, undefined}),
 
-	Resp  = simple_bridge:make_response(cowboy_response_bridge, RequestBridge),
-	Resp1 = Resp:status_code(200),
+reply(Req, Code, Format, Content) ->
+	io:format(user,"content= ~p~n", [Content]),
+
+	Resp  = simple_bridge:make_response(cowboy_response_bridge, {Req, undefined}),
+	Resp1 = Resp:status_code(Code),
 	Resp2 = Resp1:header("Content-Type", content_type(Format)),
 	Resp3 = Resp2:data(formating(Format, Content)),
 
