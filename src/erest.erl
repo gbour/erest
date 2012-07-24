@@ -6,6 +6,7 @@
 
 start(normal, Args) ->
 	erest_config:init(),
+	erest_resource:init(),
 	init(Args),
 
 	ok.
@@ -27,7 +28,7 @@ init([{prefix, Prefix}|T]) ->
 init([{schema, File}|T]) ->
 	case erest_yaml:load(File) of
 		{ok, Schema} ->
-			erest_config:insert(schema, Schema),
+			[ erest_resource:insert(R) || R <- Schema],
 			init(T);
 
 		{error, Reason} ->

@@ -10,7 +10,7 @@ init({tcp, http}, Req, Opts) ->
 % path_info = path MINUS prefix
 handle(Req=#http_req{method='GET', path_info=[]}, State) ->
 	Prefix = erest_config:lookup(prefix, ""),
-	Schema = erest_schema:all(Prefix, erest_config:lookup(schema)),
+	Schema = erest_schema:all(Prefix, erest_resource:all()),
 
 	reply(Req, 200, json, Schema);
 
