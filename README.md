@@ -1,0 +1,4 @@
+erest
+=====
+
+Erlang REST service
