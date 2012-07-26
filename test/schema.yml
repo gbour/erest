@@ -18,12 +18,12 @@ sample:
       default  : "foo"
     field7:
       type     : list(integer)
-    field8:
-      type     : dict(string)
-      required : true
-      default  :
-        key: "val"
-        foo: "bar"
+#    field8:
+#      type     : dict(string)
+#      required : true
+#      default  :
+#        key: "val"
+#        foo: "bar"
 
 user:
   key    : uid
