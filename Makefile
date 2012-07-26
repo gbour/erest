@@ -10,13 +10,16 @@ ifeq ($(MAKECMDGOALS),test)
 endif
 export CC BEAMDIR EFLAGS
 
-all: deps src
+all: deps src tst
 
 deps:
 	@$(MAKE) -C deps/
 
 src:
 	@$(MAKE) -C src/
+
+tst:
+	@$(MAKE) -C test/
 
 run:
 	cd ebin/ && erl -sname epbxd \
