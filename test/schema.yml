@@ -67,7 +67,7 @@ group:
       desc     : "group creation date"
     paths:
       type     : list(string)
-      default  : ['/bin', '/usr/bin']
+      default  : ["/bin", "/usr/bin"]
       desc     : "binaries default paths"
 
 
