@@ -1,0 +1,17 @@
+
+- schema check (erest_yaml)
+- schema persistence (erest_resource)
+- config persistence (erest_config)
+- dict() type
+- single-quoted yaml strings ('foobar')
+- bossdb as resource schema/backoffice
+- yaml formater (erest_serve)
+- html formater (erest_serve)
+- misultin webserver
+- mochiweb webserver
+- webmachine webserver
+- yaws webserver
+- documentation
+- example
+- tutorial
+- ACL
