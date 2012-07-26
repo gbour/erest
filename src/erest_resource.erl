@@ -1,7 +1,7 @@
 
 -module(erest_resource).
 
--export([init/0, insert/1, lookup/1, all/0]).
+-export([init/0, insert/1, lookup/1, all/0, get/2]).
 -include("erest_resource.hrl").
 
 init() ->
@@ -22,5 +22,14 @@ all() ->
 fill('$end_of_table', Acc) ->
 	Acc;
 fill(Previous, Acc)        ->
-	fill(ets:next(erest_resources,Previous), [erest_resource:lookup(Previous)|Acc]).
+	fill(ets:next(erest_resources,Previous), [?MODULE:lookup(Previous)|Acc]).
+
+get(Name, Spec) ->
+	case ?MODULE:lookup(Name) of
+		undefined -> resource_not_found;
+		Schema    -> get_spec(Spec, Schema)
+	end.
+
+get_spec(backend, Schema=#resource{backend=Backend}) ->
+	Backend.
 

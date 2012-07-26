@@ -10,7 +10,7 @@
 
 -record(resource, {
 	name     = undefined  :: undefined|atom(),
-	record   = undefined  :: undefined|atom(),
+	backend  = undefined  :: undefined|atom(),
 	key      = undefined  :: undefined|atom()|list(atom()),
 
 	fields   = []         :: list(#field{})

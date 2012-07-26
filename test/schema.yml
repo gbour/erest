@@ -27,6 +27,7 @@ sample:
 
 user:
   key    : uid
+  backend: backend_user
 
   fields :
     uid:

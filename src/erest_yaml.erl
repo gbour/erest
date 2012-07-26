@@ -32,6 +32,8 @@ parse_resource(Resource, []) ->
 	Resource;
 parse_resource(Resource, [{key, Key}|T]) ->
 	parse_resource(Resource#resource{key=Key}, T);
+parse_resource(Resource, [{backend, Module}|T]) ->
+	parse_resource(Resource#resource{backend=Module}, T);
 parse_resource(Resource, [{fields, Fields}|T]) ->
 	Fields2 = lists:map(
 		fun({Name, Attrs}) ->
