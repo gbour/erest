@@ -14,6 +14,18 @@ handle(Req=#http_req{method='GET', path_info=[]}, State) ->
 
 	reply(Req, 200, json, Schema);
 
+%
+% NOTE: Object is a binary. we MUST NOT convert it to an atom (for security reason)
+%
+handle(Req=#http_req{method='GET', path_info=[Object,<<"schema">>]}, State) ->
+	case erest_resource:lookup(Object) of
+		undefined ->
+			reply(Req, 404, json, <<"resource ",Object/binary," not found">>);
+
+		Resource  ->
+			Prefix = erest_config:lookup(prefix, ""),
+			reply(Req, 200, json, erest_schema:resource(Prefix, Resource))
+	end.
 
 reply(Req, Code, Format, Content) ->
 	io:format(user,"content= ~p~n", [Content]),
