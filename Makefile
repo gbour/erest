@@ -3,6 +3,9 @@ CC      = erlc
 BEAMDIR = $(shell pwd)/ebin
 EFLAGS  = -I $(shell pwd)/src
 EFLAGS += -I $(shell pwd)/deps/cowboy/include
+EFLAGS += -I $(shell pwd)/deps/erlang-record_info/include
+# NEEDED for parse/transform
+EFLAGS += -pa $(shell pwd)/deps/erlang-record_info/ebin
 EFLAGS += -I /usr/lib/erlang/lib
 
 ifeq ($(MAKECMDGOALS),test)
@@ -27,7 +30,9 @@ run:
 		-pa ../deps/simple_bridge/ebin/ \
 		-pa ../deps/yamler/ebin/ \
 		-pa ../deps/yamler/priv/ \
-	   	-eval 'erest:start(normal, [{prefix,"/foo/bar"},{server,cowboy},{schema,"./types.ws"}]).'
+		-pa ../deps/jsx/ebin/ \
+		-pa ../deps/erlang-record_info/ebin
+	   	-eval 'erest:start(normal, [{prefix,"/foo/bar"},{server,cowboy},{schema,"../test/schema.yml"}]).'
 
 clean:
 	rm -f $(BEAMDIR)/*.beam

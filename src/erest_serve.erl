@@ -56,7 +56,26 @@ handle(Req=#http_req{method='GET', path_info=[Resource]}, State) ->
 				Module:list(utils:atom(Resource), [{prefix,	erest_config:lookup(prefix,"")}])
 			)
 
-	end.
+	end;
+
+handle(Req=#http_req{method='GET', path_info=[Resource, Id]}, State) ->
+	{Code, Payload} = case erest_resource:get(Resource, backend) of
+		resource_not_found ->
+			{404, <<"resource ",Resource/binary," not found">>};
+		spec_not_found     ->
+			% MUST not append
+			% TODO: dump a stacktrace
+			{500, <<"">>};
+		Module             ->
+			case Module:lookup(utils:atom(Resource), Id, []) of
+				undefined  ->
+					{404, <<"resource ",Resource/binary,"/",Id/binary," not found">>};
+				Data       ->
+					{200, Data}
+			end
+	end,
+
+	reply(Req, Code, json, Payload).
 
 
 reply(Req, Code, Format, Content) ->

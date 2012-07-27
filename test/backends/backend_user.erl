@@ -2,6 +2,9 @@
 -module(backend_user).
 -export([init/0,list/2,insert/3,update/4,lookup/3, delete/3]).
 
+-include_lib("record_info.hrl").
+-export_record_info([user]).
+
 -record(user, {
 	uid    :: integer(),
 	name   :: binary(),
@@ -24,10 +27,14 @@ list(user, _Opts) ->
 		ets:match(?ETS_NAME, #user{uid='$1',_='_'})
 	).
 
+%
+% args:
+%	- Id : binary. Object identifier 
+%
 lookup(user, Id, Opts) ->
-	case ets:lookup(?ETS_NAME, Id) of
+	case ets:lookup(?ETS_NAME, utils:int(Id)) of
 		[]    -> undefined;
-		[Res] -> Res
+		[Res] -> record_info:record_to_proplist(Res, ?MODULE)
 	end.
 
 insert(user, User, Opts) ->

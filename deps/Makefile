@@ -39,6 +39,15 @@ yamler:
 	cd $@ && git pull --rebase && ../rebar/rebar compile
 	#@$(MAKE) -C $@/
 
+erlang-record_info:
+	if [ ! -d $@ ]; then\
+		git clone git://github.com/bipthelin/erlang-record_info.git;\
+	fi
+	cd $@ && git pull --rebase
+	#@$(MAKE) -C $@/
+
+
+
 clean:
 	find ./* -prune -type d -exec rm -Rf '{}' \;
 
