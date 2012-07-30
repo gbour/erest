@@ -39,13 +39,13 @@ lookup(user, Id, Opts) ->
 
 insert(user, User, Opts) ->
 	Ret = ets:insert_new(?ETS_NAME, #user{
-		uid   = proplists:get_value(uid   , User),
-		name  = proplists:get_value(name  , User),
-		groups= proplists:get_value(groups, User)
+		uid   = proplists:get_value(<<"uid">>   , User),
+		name  = proplists:get_value(<<"name">>  , User),
+		groups= proplists:get_value(<<"groups">>, User)
 	}),
 
 	case Ret of
-		true  -> {ok   , proplists:get_value(uid, User)};
+		true  -> {ok   , proplists:get_value(<<"uid">>, User)};
 		false -> {error, found}
 	end.
 
@@ -55,8 +55,8 @@ update(user, Id, User, Opts) ->
 		_  ->
 			Ret2 = ets:insert(?ETS_NAME, #user{
 				uid   = Id,
-				name  = proplists:get_value(name  , User),
-				groups= proplists:get_value(groups, User)
+				name  = proplists:get_value(<<"name">>  , User),
+				groups= proplists:get_value(<<"groups">>, User)
 			}),
 
 			case Ret2 of

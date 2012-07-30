@@ -75,6 +75,23 @@ handle(Req=#http_req{method='GET', path_info=[Resource, Id]}, State) ->
 			end
 	end,
 
+	reply(Req, Code, json, Payload);
+
+handle(Req=#http_req{method='POST', path_info=[Resource], buffer=Body}, State) ->
+	{Code, Payload} = case erest_resource:get(Resource, backend) of
+		resource_not_found ->
+			{404, <<"resource ",Resource/binary," not found">>};
+		spec_not_found     ->
+			{500, <<"">>};
+		Module             ->
+			case Module:insert(utils:atom(Resource), unformating(json, Body), []) of
+				{error, found} ->
+					{409, <<"resource already set">>};
+				{ok, Id}       ->
+					{200, utils:bin(Id)}
+			end
+	end,
+
 	reply(Req, Code, json, Payload).
 
 
@@ -92,6 +109,8 @@ reply(Req, Code, Format, Content) ->
 content_type(json) -> 
 	"application/json".
 
+unformating(json, Raw)   ->
+	jsx:decode(Raw).
 formating(json, Content) ->
 	jsx:encode(Content).
 
