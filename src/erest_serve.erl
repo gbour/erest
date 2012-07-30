@@ -92,6 +92,25 @@ handle(Req=#http_req{method='POST', path_info=[Resource], buffer=Body}, State) -
 			end
 	end,
 
+	reply(Req, Code, json, Payload);
+
+handle(Req=#http_req{method='DELETE', path_info=[Resource, Id]}, State) ->
+	{Code, Payload} = case erest_resource:get(Resource, backend) of
+		resource_not_found ->
+			{404, <<"resource ",Resource/binary," not found">>};
+		spec_not_found     ->
+			% MUST not append
+			% TODO: dump a stacktrace
+			{500, <<"">>};
+		Module             ->
+			case Module:delete(utils:atom(Resource), utils:int(Id), []) of
+				{error, fail} ->
+					{404, <<"resource ",Resource/binary,"/",Id/binary," not found">>};
+				ok            ->
+					{200, Id}
+			end
+	end,
+
 	reply(Req, Code, json, Payload).
 
 
