@@ -94,6 +94,25 @@ handle(Req=#http_req{method='POST', path_info=[Resource], buffer=Body}, State) -
 
 	reply(Req, Code, json, Payload);
 
+handle(Req=#http_req{method='POST', path_info=[Resource, Id], buffer=Body}, State) ->
+	{Code, Payload} = case erest_resource:get(Resource, backend) of
+		resource_not_found ->
+			{404, <<"resource ",Resource/binary," not found">>};
+		spec_not_found     ->
+			{500, <<"">>};
+		Module             ->
+			case Module:update(utils:atom(Resource), utils:int(Id), unformating(json, Body), []) of
+				{error, 'not-found'} ->
+					{404, <<"resource ",Resource/binary,"/",Id/binary," not found">>};
+				{error, fail} ->
+					{409, <<"fail to update record">>};
+				{ok, Id2}       ->
+					{200, Id2}
+			end
+	end,
+
+	reply(Req, Code, json, Payload);
+
 handle(Req=#http_req{method='DELETE', path_info=[Resource, Id]}, State) ->
 	{Code, Payload} = case erest_resource:get(Resource, backend) of
 		resource_not_found ->
