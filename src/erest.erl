@@ -5,14 +5,31 @@
 -export([start/2,stop/1]).
 
 start(normal, Args) ->
-	erest_config:init(),
-	erest_resource:init(),
+	init_storage(),
+
+	erest_config:init([]),
+	erest_resource:init([]),
 	init(Args),
 
 	ok.
 
+
 stop(_State) ->
+	mnesia:stop(),
 	ok.
+
+
+init_storage() ->
+	Ret = case mnesia:create_schema([node()]) of
+		ok                               -> ok;
+		{error, {_, {already_exists,_}}} -> ok;
+		{error, Err}                     -> 
+			io:format(user, "fail to initialise mnesia: ~p~n", [Err]),
+			{error, Err}
+	end,
+
+	mnesia:start(),
+	Ret.
 
 
 init([]) ->
