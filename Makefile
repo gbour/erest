@@ -31,7 +31,7 @@ run:
 		-pa ../deps/yamler/ebin/ \
 		-pa ../deps/yamler/priv/ \
 		-pa ../deps/jsx/ebin/ \
-		-pa ../deps/erlang-record_info/ebin
+		-pa ../deps/erlang-record_info/ebin \
 	   	-eval 'erest:start(normal, [{prefix,"/foo/bar"},{server,cowboy},{schema,"../test/schema.yml"}]).'
 
 clean:
