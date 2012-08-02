@@ -1,0 +1,25 @@
+
+people:
+  key   : nickname
+
+  fields:
+    nickname   :
+      type     : string
+      required : true
+      unique   : true
+      desc     : "people's nickname"
+
+    dograce:
+      type     : string
+      default  : "chihuahua"
+      desc     : "what is people dog race"
+
+    sextape:
+      type     : boolean
+      default  : false
+      desc     : "has the people's sextape been exposed on internet"
+
+    put_in_jail:
+      type     : integer
+      default  : 0
+      desc     : "how many times the people goes to prison"
