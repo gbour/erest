@@ -15,7 +15,7 @@
 %%	You should have received a copy of the GNU Affero General Public License
 %%	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-% @doc Access eReST configuration parameters (get/set)
+% @doc eReST resources store
 -module(erest_resource).
 -author("Guillaume Bour <guillaume@bour.cc>").
 
