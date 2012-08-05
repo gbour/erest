@@ -117,7 +117,7 @@ handle(Req=#http_req{method='GET', path_info=[Resource, Id]}, State) ->
 %
 %
 handle(Req=#http_req{method='PUT', path_info=[Resource]}, State) ->
-	handle(Req#http_request{method='POST'}, State);
+	handle(Req#http_req{method='POST'}, State);
 handle(Req=#http_req{method='POST', path_info=[Resource], buffer=Body}, State) ->
 	{Code, Payload} = case erest_resource:get(Resource, backend) of
 		resource_not_found ->
@@ -139,7 +139,7 @@ handle(Req=#http_req{method='POST', path_info=[Resource], buffer=Body}, State) -
 %
 %
 handle(Req=#http_req{method='PUT', path_info=[Resource, Id]}, State) ->
-	handle(Req#http_request{method='POST'}, State);
+	handle(Req#http_req{method='POST'}, State);
 handle(Req=#http_req{method='POST', path_info=[Resource, Id], buffer=Body}, State) ->
 	{Code, Payload} = case erest_resource:get(Resource, backend) of
 		resource_not_found ->
@@ -217,7 +217,7 @@ unformating(json, Raw)   ->
 %%
 %% Convert "instanciated object" to binary string using formatter
 %%
--spec formating(atom(), any()) -> binary()
+-spec formating(atom(), any()) -> binary().
 formating(json, Content) ->
 	jsx:encode(Content).
 
